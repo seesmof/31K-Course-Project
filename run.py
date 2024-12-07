@@ -53,11 +53,6 @@ processor_frequencies_data=ProcessorFrequencies(
     current=cpu_frequencies.current,
 )
 
-processor_usage_data={
-    f'Core {index}': usage
-    for index,usage in enumerate(psutil.cpu_percent(percpu=True))
-}
-
 VirtualMemory=namedtuple('VirtualMemory','total available used percentage')
 virtual_memory_data=VirtualMemory(
     total=get_formatted_size(virtual_memory.total),
@@ -144,7 +139,7 @@ def update_ui():
 with ui.row().classes('flex gap-3'):
     with ui.column():
         ui.table(columns=COLUMNS,rows=get_rows(system_data._asdict()),title='System')
-        
+
     with ui.column():
         ui.table(columns=COLUMNS,rows=get_rows(processor_data._asdict()),title='Processor')
 
@@ -155,6 +150,10 @@ with ui.row().classes('flex gap-3'):
                 ui.label('Processor Frequency').classes('text'+CENTER_CLASSES)
                 processor_frequencies_circle=ui.circular_progress(min=cpu_frequencies.min,max=cpu_frequencies.max,value=cpu_frequencies.current).classes('self'+CENTER_CLASSES)
 
+            processor_usage_data={
+                f'Core {index}': usage
+                for index,usage in enumerate(psutil.cpu_percent(percpu=True))
+            }
             processor_usage_table=ui.table(columns=COLUMNS,rows=get_rows(processor_usage_data),title='Usage (%)').classes('flex-1')
 
     with ui.column():
