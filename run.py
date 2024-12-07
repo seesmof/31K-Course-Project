@@ -5,8 +5,8 @@ import win32api
 import platform
 import psutil
 
-CENTER_CLASSES='-center w-full'
-COLUMNS=[
+CENTER_CLASSES: str = '-center w-full'
+COLUMNS: list[dict] = [
     {'id':'property','label':'Property','field':'property','align':'left'},
     {'id':'value','label':'Value','field':'value','sortable':True},
 ]
@@ -224,5 +224,6 @@ with ui.row():
     network_speed_plot.push([datetime.now().timestamp()],[[0],[0]])
     network_speed_plot.push([datetime.now().timestamp()],[[100],[100]])
 
-ui.timer(1,update_ui,active=True)
-ui.run(title='System Resources Analysis',favicon='💻')
+if __name__ in {"__main__","__mp_main__"}:
+    ui.timer(1,update_ui,active=True)
+    ui.run(title='System Resources Analysis',favicon='💻')
